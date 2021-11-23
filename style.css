@@ -4,12 +4,14 @@
 
 body {
   background-color: black;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  /* display: c; */
+  /* flex-direction: column; */
+  /* align-items: center; */
+  /* justify-content: center; */
 }
 
 .main {
+  margin: auto;
   margin-top: 20px;
   background-image: url("/img/background.png");
   background-repeat: no-repeat;
@@ -18,6 +20,12 @@ body {
   width: 900px;
   height: 600px;
   border-radius: 20px;
+
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
 } 
 
 .header {
@@ -26,7 +34,7 @@ body {
   align-items: center;
 }
 
-.header__startBtn {
+.header__button {
   margin: 5px;
   background-color: palegoldenrod;
   border-radius: 20%;
@@ -34,12 +42,27 @@ body {
   text-align: center;
 }
 
-.start {  
+
+.button {  
   width: 48px;
   height: 48px;
   font-size: 28px;
   background-color: transparent;
   border: none;
+}
+
+.btn-stop {
+  /* background-image: url("/img/stop-solid.png"); */
+  /* background-color: chocolate; */
+}
+
+.btn-start {
+  /* background-image: url("/img/play-solid.png"); */
+  /* background-color: cornflowerblue; */
+}
+
+#btn-img {
+  width: 28px;
 }
 
 .header__timer {
@@ -64,3 +87,15 @@ body {
   text-align: center;
   font-size: 50px;
 }
+
+.content {
+  width: 100%;
+  height: 300px;
+  /* border: 1px solid black; */
+}
+
+.bug, 
+.carrot {
+  visibility: hidden;
+}
+
