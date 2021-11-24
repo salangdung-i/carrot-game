@@ -22,7 +22,7 @@ let started = false;
 let score = 0;
 let timer = undefined;
 
-const gameFinishBanner = new popUp();
+const gameFinishBanner = new PopUp();
 gameFinishBanner.setClickListener(() => {
   startGame();
 });
@@ -50,7 +50,6 @@ function stopGame() {
   stopGameTimer();
   hideGameButton();
   gameFinishBanner.showWithText('REPLAY❓');
-  showPopUpWithText('REPLAY❓');
   playSound(alertSound);
   stopSound(bgSound);
 }
@@ -65,7 +64,7 @@ function finishGame(win) {
   }
   stopGameTimer();
   stopSound(bgSound);
-  showPopUpWithText(win ? 'YOU WON 🎉' : 'YOU LOST 💩');
+  gameFinishBanner.showWithText(win ? 'YOU WON 🎉' : 'YOU LOST 💩');
 }
 
 function showStopButton() {
@@ -106,11 +105,6 @@ function updateTimerText(time) {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
   gameTimer.innerText = `${minutes}:${seconds}`;
-}
-
-function showPopUpWithText(text) {
-  popUpText.innerText = text;
-  popUp.classList.remove('pop-up--hide');
 }
 
 function initGame() {
