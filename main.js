@@ -6,6 +6,8 @@ const bugPull = new Audio('./sound/bug_pull.mp3');
 const carrotPull = new Audio('./sound/carrot_pull.mp3');
 const gameWin = new Audio('./sound/game_win.mp3');
 
+const field = document.querySelector('.field');
+
 // start button click event 
 // bg start
 // 1. timer start
@@ -14,7 +16,7 @@ const gameWin = new Audio('./sound/game_win.mp3');
 const gameBtn = document.querySelector('.state-btn');
 gameBtn.addEventListener('click', () => {
 
-  // bg.play();
+  bg.play();
   timerClick();
   sprayItem();
 });
@@ -34,9 +36,7 @@ function timerClick() {
 }
 
 
-
 function sprayItem() {
-  const field = document.querySelector('.field');
   const fieldRect = field.getBoundingClientRect();
 
   const carrotNum = 5;
@@ -48,7 +48,7 @@ function sprayItem() {
 
   for (let i = 0; i < carrotNum; i++) {
     const carrot = document.createElement('img');
-    carrot.setAttribute('class', carrot);
+    carrot.setAttribute('class', 'carrot');
     carrot.setAttribute('src', 'img/carrot.png');
     carrot.style.position = 'absolute';
     const x = randomNumber(x1, x2);
@@ -75,7 +75,16 @@ function sprayItem() {
 function randomNumber(min, max) {
   return Math.random() * (max - min) + min;
 }
+
 // bug, carrot click event
 // bug click >  bug_pull bg, game stop(timer) > visible pop-up(lose)
 // carrot click > carrot_pull bg, count--, if(count == 0) game stop, bg stop, game_win bg , visible pop-up(win)
 
+field.addEventListener('click', (event) => {
+  const target = event.target;
+  if (target.matches('.carrot')) {
+    target.remove();
+  } else if (target.matches('.bug')) {
+
+  }
+});
