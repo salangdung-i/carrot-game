@@ -1,6 +1,10 @@
 'use strict';
 
 const bg = new Audio('./sound/bg.mp3');
+const alert = new Audio('./sound/alert.wav');
+const bugPull = new Audio('./sound/bug_pull.mp3');
+const carrotPull = new Audio('./sound/carrot_pull.mp3');
+const gameWin = new Audio('./sound/game_win.mp3');
 
 // start button click event 
 // bg start
@@ -11,15 +15,24 @@ const gameBtn = document.querySelector('.state-btn');
 gameBtn.addEventListener('click', () => {
 
   // bg.play();
-  // timerStart();
+  timerClick();
   sprayItem();
 });
 
 
-// function bgStart() {
+function timerClick() {
+  let time = 10;
+  const timeInterval = setInterval(timer, 1000);
 
-//   bg.pause();
-// }
+  function timer() {
+    time = time - 1;
+    if (time < 1) {
+      clearInterval(timeInterval);
+    }
+    document.querySelector('.timer').innerHTML = `00:0${time}`
+  }
+}
+
 
 
 function sprayItem() {
