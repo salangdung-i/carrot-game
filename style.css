@@ -29,20 +29,19 @@ body {
   margin: 5px;
 }
 
-.state-btn {
+.game--start-btn {
   background-color: lightgoldenrodyellow;
   border: 3px solid black;
   border-radius: 20%;
   width: 50px;
   height: 50px;
 }
-
 .fa-play {
   font-size: 20px;
 }
 
 
-.timer {
+.game--timer {
   border: 3px solid black;
   border-radius: 5px  ;
   background-color: white;
@@ -52,7 +51,7 @@ body {
   font-size: 28px;
 }
 
-.carrot-count {
+.game--count {
   border-radius: 50%;
   border: 3px solid black;
   background-color: lightsalmon;

@@ -6,132 +6,155 @@ const bugPull = new Audio('./sound/bug_pull.mp3');
 const carrotPull = new Audio('./sound/carrot_pull.mp3');
 const gameWin = new Audio('./sound/game_win.mp3');
 
+const gameBtn = document.querySelector('.game--start-btn');
+const gameCount = document.querySelector('.game--count');
+const gameTimer = document.querySelector('.game--timer');
+
 const popUp = document.querySelector('.pop-up');
-const field = document.querySelector('.field');
-const carrotNum = 5;
-const bugNum = 20;
+const popUpText = document.querySelector('.pop-up-text');
+const popUpBtn = document.querySelector('.pop-up-btn');
 
-const gameBtn = document.querySelector('.state-btn');
 let gameStatus = true;
-
-// start button click event 
-// bg start
-// 1. timer start
-// 2. change img 'stop' 
-// 3. bug, carrot spread into field
-
-gameBtn.addEventListener('click', () => {
-
-  bg.play();
-  timerClick();
-  sprayItem();
-  gameBtn.style.visibility = 'hidden';
-});
-
-
+let catchCarrot = 0;
+let count = 0;
 
 let timeInterval = null;
 let time = 10;
 
+const field = document.querySelector('.field');
+const fieldRect = field.getBoundingClientRect();
+
+let CARROT_COUNT = 0;
+let BUG_COUNT = 0;
+
+let GAME_STATE = 0;
+
+function gameInit() {
+  gameStatus = true;
+  time = 10;
+  catchCarrot = 0;
+  gameCount.innerHTML = `${CARROT_COUNT}`;
+  gameTimer.innerHTML = `00:${time}`;
+}
+
+
+function gameStart() {
+  ++GAME_STATE;
+  bg.play();
+  timerClick();
+  console.log(`GAME_STATE: ${GAME_STATE}`);
+  if (GAME_STATE == 1) {
+    CARROT_COUNT = 3;
+    BUG_COUNT = 5;
+  } else if (GAME_STATE == 2) {
+    CARROT_COUNT = 5;
+    BUG_COUNT = 10;
+  } else if (GAME_STATE == 3) {
+    CARROT_COUNT = 10;
+    BUG_COUNT = 20;
+  }
+  addItem('carrot', CARROT_COUNT, 'img/carrot.png');
+  addItem('bug', BUG_COUNT, 'img/bug.png');
+  gameBtn.style.visibility = 'hidden';
+}
+
+function gameStop(state) {
+  gameStatus = false;
+  bg.pause();
+  stopGameTimer();
+
+  if (state) {
+    gameWin.play();
+    popUpText.innerHTML = 'YOU WIN 🎉';
+  } else {
+
+    popUpText.innerHTML = 'YOU LOST 🥲';
+  }
+  popUp.style.visibility = 'visible';
+
+}
+
+gameBtn.addEventListener('click', () => {
+  gameInit();
+  if (gameStatus) {
+    gameStart();
+  } else {
+    gameStop();
+  }
+});
+
+field.addEventListener('click', (event) => {
+  const target = event.target;
+  if (target.matches('.carrot')) {
+    target.remove();
+    carrotPull.play();
+    catchCarrot++;
+    count = CARROT_COUNT - catchCarrot;
+    gameCount.innerHTML = `${count}`;
+    if (count == 0) {
+      gameStop(true);
+    }
+  } else if (target.matches('.bug')) {
+    bugPull.play();
+    gameStop(false);
+  }
+});
+
+popUpBtn.addEventListener('click', () => {
+  popUp.style.visibility = 'hidden';
+  gameBtn.style.visibility = 'visible';
+  while (field.hasChildNodes()) { field.removeChild(field.firstChild); }
+
+});
+
 function timerClick() {
+  updateTimerText(time);
   clearInterval(timeInterval);
   timeInterval = setInterval(timer, 1000);
 }
 
+function stopGameTimer() {
+  clearInterval(timeInterval);
+}
+
 function timer() {
-  time = time - 1;
   if (time < 1 || !gameStatus) {
     clearInterval(timeInterval);
-    popUp.style.visibility = 'visible';
-    bg.pause();
+    gameStop();
   }
+  updateTimerText(--time);
+}
 
-  document.querySelector('.timer').innerHTML = `00:0${time}`;
+function updateTimerText(time) {
+  const minutes = Math.floor(time / 60) > 9 ? Math.floor(time / 60) : '0' + Math.floor(time / 60);
+  const seconds = time % 60 > 9 ? time : '0' + time;
+  gameTimer.innerText = `${minutes}:${seconds}`;
 }
 
 
-function sprayItem() {
-  const fieldRect = field.getBoundingClientRect();
+function addItem(className, count, imgPath) {
   const x1 = 0;
   const y1 = 0;
-  const x2 = fieldRect.width - 80;
-  const y2 = fieldRect.height - 80;
-
-  for (let i = 0; i < carrotNum; i++) {
-    const carrot = document.createElement('img');
-    carrot.setAttribute('class', 'carrot');
-    carrot.setAttribute('src', 'img/carrot.png');
-    carrot.style.position = 'absolute';
+  const x2 = fieldRect.width - 70;
+  const y2 = fieldRect.height - 70;
+  for (let i = 0; i < count; i++) {
+    const item = document.createElement('img');
+    item.setAttribute('class', className);
+    item.setAttribute('src', imgPath);
+    item.style.position = 'absolute';
     const x = randomNumber(x1, x2);
     const y = randomNumber(y1, y2);
-    carrot.style.left = `${x}px`;
-    carrot.style.top = `${y}px`;
-    field.appendChild(carrot);
+    item.style.left = `${x}px`;
+    item.style.top = `${y}px`;
+    field.appendChild(item);
   }
-
-
-  for (let i = 0; i < bugNum; i++) {
-    const bug = document.createElement('img');
-    bug.setAttribute('class', 'bug');
-    bug.setAttribute('src', 'img/bug.png');
-    bug.style.position = 'absolute';
-    const x = randomNumber(x1, x2);
-    const y = randomNumber(y1, y2);
-    bug.style.left = `${x}px`;
-    bug.style.top = `${y}px`;
-    field.appendChild(bug);
-  }
-};
+}
 
 function randomNumber(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-const popUpText = document.querySelector('.pop-up-text');
-// bug, carrot click event
-// bug click >  bug_pull bg, game stop(timer) > visible pop-up(lose)
-// carrot click > carrot_pull bg, count--, if(count == 0) game stop, bg stop, game_win bg , visible pop-up(win)
-let catchCarrot = 0;
-let count = 0;
-const carrotCount = document.querySelector('.carrot-count');
-field.addEventListener('click', (event) => {
-  const target = event.target;
-  console.log(event.target)
-  if (target.matches('.carrot')) {
-    target.remove();
-    carrotPull.play();
-    catchCarrot++;
-    count = carrotNum - catchCarrot;
-    carrotCount.innerHTML = `${count}`;
-    if (count == 0) {
-      popUpText.innerHTML = 'YOU WIN';
-      gameStatus = false;
-      gameWin.play();
-
-    }
-
-  } else if (target.matches('.bug')) {
-
-    popUpText.innerHTML = 'YOU LOST';
-    gameStatus = false;
-    bugPull.play();
-  }
-});
-
-const popUpBtn = document.querySelector('.pop-up-btn');
-popUpBtn.addEventListener('click', () => {
-  reset();
-  popUp.style.visibility = 'hidden';
-  gameBtn.style.visibility = 'visible';
-});
 
 
-function reset() {
-  catchCarrot = 0;
-  time = 10;
-  document.querySelector('.timer').innerHTML = `00:${time}`;
-  carrotCount.innerHTML = `${carrotNum}`;
-  gameStatus = true;
-  while (field.hasChildNodes()) { field.removeChild(field.firstChild); }
 
-}
+
