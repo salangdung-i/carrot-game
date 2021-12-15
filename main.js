@@ -14,10 +14,11 @@ const popUp = document.querySelector('.pop-up');
 const popUpText = document.querySelector('.pop-up-text');
 const popUpBtn = document.querySelector('.pop-up-btn');
 
+
 let gameStatus = true;
 let catchCarrot = 0;
 let count = 0;
-
+const CARROT_SIZE = 80;
 let timeInterval = null;
 let time = 10;
 
@@ -27,22 +28,21 @@ const fieldRect = field.getBoundingClientRect();
 let CARROT_COUNT = 0;
 let BUG_COUNT = 0;
 
-let GAME_STATE = 0;
+let GAME_STATE = 1;
 
 function gameInit() {
   gameStatus = true;
   time = 10;
   catchCarrot = 0;
-  gameCount.innerHTML = `${CARROT_COUNT}`;
+
   gameTimer.innerHTML = `00:${time}`;
 }
 
+const gameLevel = document.querySelector('.game--level');
 
 function gameStart() {
-  ++GAME_STATE;
   bg.play();
   timerClick();
-  console.log(`GAME_STATE: ${GAME_STATE}`);
   if (GAME_STATE == 1) {
     CARROT_COUNT = 3;
     BUG_COUNT = 5;
@@ -53,6 +53,8 @@ function gameStart() {
     CARROT_COUNT = 10;
     BUG_COUNT = 20;
   }
+  gameCount.innerHTML = `${CARROT_COUNT}`;
+
   addItem('carrot', CARROT_COUNT, 'img/carrot.png');
   addItem('bug', BUG_COUNT, 'img/bug.png');
   gameBtn.style.visibility = 'hidden';
@@ -64,11 +66,25 @@ function gameStop(state) {
   stopGameTimer();
 
   if (state) {
-    gameWin.play();
-    popUpText.innerHTML = 'YOU WIN 🎉';
-  } else {
+    ++GAME_STATE;
+    if (GAME_STATE > 3) {
+      popUpText.innerHTML = `
+      NO NEXT STATE❗️ <br>
+      YOU'RE THE BEST 🏆
+       `;
+    } else {
+      gameWin.play();
+      popUpText.innerHTML = `
+      YOU WIN 🎉 <br>
+      DO YOU WANT NEXT ${GAME_STATE} STATE❓
+       `;
+    }
 
-    popUpText.innerHTML = 'YOU LOST 🥲';
+  } else {
+    popUpText.innerHTML = `
+    YOU LOST 🥲 <br>
+    TRY AGAIN ${GAME_STATE} STATE❓
+    `;
   }
   popUp.style.visibility = 'visible';
 
@@ -135,8 +151,8 @@ function updateTimerText(time) {
 function addItem(className, count, imgPath) {
   const x1 = 0;
   const y1 = 0;
-  const x2 = fieldRect.width - 70;
-  const y2 = fieldRect.height - 70;
+  const x2 = fieldRect.width - CARROT_SIZE;
+  const y2 = fieldRect.height - CARROT_SIZE;
   for (let i = 0; i < count; i++) {
     const item = document.createElement('img');
     item.setAttribute('class', className);
