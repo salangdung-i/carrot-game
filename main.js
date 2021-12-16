@@ -69,21 +69,21 @@ function gameStop(state) {
     ++GAME_STATE;
     if (GAME_STATE > 3) {
       popUpText.innerHTML = `
-      NO NEXT STATE❗️ <br>
+      NO NEXT STAGE❗️ <br>
       YOU'RE THE BEST 🏆
        `;
     } else {
       gameWin.play();
       popUpText.innerHTML = `
       YOU WIN 🎉 <br>
-      DO YOU WANT NEXT ${GAME_STATE} STATE❓
+      DO YOU WANT NEXT ${GAME_STATE} STAGE❓
        `;
     }
 
   } else {
     popUpText.innerHTML = `
     YOU LOST 🥲 <br>
-    TRY AGAIN ${GAME_STATE} STATE❓
+    TRY AGAIN ${GAME_STATE} STAGE❓
     `;
   }
   popUp.style.visibility = 'visible';
@@ -134,11 +134,12 @@ function stopGameTimer() {
 }
 
 function timer() {
+  updateTimerText(--time);
   if (time < 1 || !gameStatus) {
     clearInterval(timeInterval);
     gameStop();
   }
-  updateTimerText(--time);
+
 }
 
 function updateTimerText(time) {
