@@ -1,5 +1,7 @@
 'use strict';
 
+import PopUp from './popup.js';
+
 const bg = new Audio('./sound/bg.mp3');
 const alert = new Audio('./sound/alert.wav');
 const bugPull = new Audio('./sound/bug_pull.mp3');
@@ -10,10 +12,13 @@ const gameBtn = document.querySelector('.game--start-btn');
 const gameCount = document.querySelector('.game--count');
 const gameTimer = document.querySelector('.game--timer');
 
-const popUp = document.querySelector('.pop-up');
-const popUpText = document.querySelector('.pop-up-text');
-const popUpBtn = document.querySelector('.pop-up-btn');
 
+const gameBanner = new PopUp();
+gameBanner.setClickListener(() => {
+  // startGame();
+  gameBtn.style.visibility = 'visible';
+  while (field.hasChildNodes()) { field.removeChild(field.firstChild) }
+});
 
 let gameStatus = true;
 let catchCarrot = 0;
@@ -38,7 +43,6 @@ function gameInit() {
   gameTimer.innerHTML = `00:${time}`;
 }
 
-const gameLevel = document.querySelector('.game--level');
 
 function gameStart() {
   bg.play();
@@ -61,32 +65,28 @@ function gameStart() {
 }
 
 function gameStop(state) {
+  let text;
   gameStatus = false;
   bg.pause();
   stopGameTimer();
 
   if (state) {
     ++GAME_STATE;
-    if (GAME_STATE > 3) {
-      popUpText.innerHTML = `
-      NO NEXT STAGE❗️ <br>
-      YOU'RE THE BEST 🏆
-       `;
-    } else {
-      gameWin.play();
-      popUpText.innerHTML = `
-      YOU WIN 🎉 <br>
-      DO YOU WANT NEXT ${GAME_STATE} STAGE❓
-       `;
-    }
 
+    gameWin.play();
+    if (GAME_STATE > 3) {
+      text = `NO NEXT STAGE❗️ 
+      YOU'RE THE BEST 🏆`;
+    } else {
+      text = `YOU WIN 🎉 
+      DO YOU WANT NEXT ${GAME_STATE} STAGE❓`;
+    }
   } else {
-    popUpText.innerHTML = `
-    YOU LOST 🥲 <br>
-    TRY AGAIN ${GAME_STATE} STAGE❓
-    `;
+    text = `YOU LOST 🥲 
+    TRY AGAIN ${GAME_STATE} STAGE❓`;
   }
-  popUp.style.visibility = 'visible';
+
+  gameBanner.showWithText(text);
 
 }
 
@@ -116,12 +116,13 @@ field.addEventListener('click', (event) => {
   }
 });
 
-popUpBtn.addEventListener('click', () => {
-  popUp.style.visibility = 'hidden';
-  gameBtn.style.visibility = 'visible';
-  while (field.hasChildNodes()) { field.removeChild(field.firstChild); }
+// popUpBtn.addEventListener('click', () => {
+//   popUp.style.visibility = 'hidden';
+//   gameBtn.style.visibility = 'visible';
+//   while (field.hasChildNodes()) { field.removeChild(field.firstChild); }
 
-});
+// });
+
 
 function timerClick() {
   updateTimerText(time);
