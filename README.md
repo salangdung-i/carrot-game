@@ -4,7 +4,7 @@
 총 3단계로 이루어져 있으며, 실행중인 단계에서 실패할 경우 현재의 단계를 다시 실행 할 수 있습니다. 
 
 <figure>
-    <img src="./img/play_img.png" title="초기화면">    
+    <img src="img/play_img.png" title="초기화면">    
     <figcaption>초기화면</figcaption>
 </figure>
 
@@ -21,6 +21,6 @@
 -
 
 ### Screen Shot 📸
-<img src="./img/gameing.png" title="게임중 화면">    
-<img src="./img/next-level.png" title="다음 레벨 선택화면">    
-<img src="./img/again-stage.png" title="재시도화면">    
+<img src="img/gameing.png" title="게임중 화면">    
+<img src="img/next-level.png" title="다음 레벨 선택화면">    
+<img src="img/again-stage.png" title="재시도화면">    
