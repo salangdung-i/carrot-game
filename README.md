@@ -18,9 +18,20 @@
 - HTML, CSS, JAVASCRIPT
 
 ### 🔗 게임 페이지 
--
+- https://salangdung-i.github.io/carrot-game/
 
 ### Screen Shot 📸
-<img src="img/gameing.png" title="게임중 화면">    
-<img src="img/next-level.png" title="다음 레벨 선택화면">    
+<figure>
+<img src="img/play_img.png" title="게임중 화면">   
+    <figcaption>게임 중 화면 </figcaption>
+</figure>
+
+<figure>
+<img src="img/next-level.png" title="다음 레벨 선택화면">     
+    <figcaption>다음 레벨 선택화면</figcaption>
+</figure>
+
+<figure>
 <img src="img/again-stage.png" title="재시도화면">    
+    <figcaption>실패후 다음레벨 선택화면 </figcaption>
+</figure>
