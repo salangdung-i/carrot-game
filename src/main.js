@@ -1,12 +1,7 @@
 'use strict';
 
 import PopUp from './popup.js';
-
-const bg = new Audio('./sound/bg.mp3');
-const alert = new Audio('./sound/alert.wav');
-const bugPull = new Audio('./sound/bug_pull.mp3');
-const carrotPull = new Audio('./sound/carrot_pull.mp3');
-const gameWin = new Audio('./sound/game_win.mp3');
+import * as audio from './audio.js';
 
 const gameBtn = document.querySelector('.game--start-btn');
 const gameCount = document.querySelector('.game--count');
@@ -45,7 +40,7 @@ function gameInit() {
 
 
 function gameStart() {
-  bg.play();
+  audio.playBg();
   timerClick();
   if (GAME_STATE == 1) {
     CARROT_COUNT = 3;
@@ -67,13 +62,13 @@ function gameStart() {
 function gameStop(state) {
   let text;
   gameStatus = false;
-  bg.pause();
+  audio.stopBg();
   stopGameTimer();
 
   if (state) {
     ++GAME_STATE;
 
-    gameWin.play();
+    audio.playGameWin();
     if (GAME_STATE > 3) {
       text = `NO NEXT STAGE❗️ 
       YOU'RE THE BEST 🏆`;
@@ -82,12 +77,12 @@ function gameStop(state) {
       DO YOU WANT NEXT ${GAME_STATE} STAGE❓`;
     }
   } else {
+    audio.playAlert();
     text = `YOU LOST 🥲 
     TRY AGAIN ${GAME_STATE} STAGE❓`;
   }
 
   gameBanner.showWithText(text);
-
 }
 
 gameBtn.addEventListener('click', () => {
@@ -103,7 +98,7 @@ field.addEventListener('click', (event) => {
   const target = event.target;
   if (target.matches('.carrot')) {
     target.remove();
-    carrotPull.play();
+    audio.playCarrotPull();
     catchCarrot++;
     count = CARROT_COUNT - catchCarrot;
     gameCount.innerHTML = `${count}`;
@@ -111,18 +106,10 @@ field.addEventListener('click', (event) => {
       gameStop(true);
     }
   } else if (target.matches('.bug')) {
-    bugPull.play();
+    audio.playBugPull();
     gameStop(false);
   }
 });
-
-// popUpBtn.addEventListener('click', () => {
-//   popUp.style.visibility = 'hidden';
-//   gameBtn.style.visibility = 'visible';
-//   while (field.hasChildNodes()) { field.removeChild(field.firstChild); }
-
-// });
-
 
 function timerClick() {
   updateTimerText(time);
