@@ -74,12 +74,12 @@ function gameStop(state) {
       YOU'RE THE BEST 🏆`;
     } else {
       text = `YOU WIN 🎉 
-      DO YOU WANT NEXT ${GAME_STATE} STAGE❓`;
+      DO YOU WANT NEXT STAGE${GAME_STATE} ❓`;
     }
   } else {
     audio.playAlert();
     text = `YOU LOST 🥲 
-    TRY AGAIN ${GAME_STATE} STAGE❓`;
+    TRY AGAIN STAGE${GAME_STATE}❓`;
   }
 
   gameBanner.showWithText(text);
