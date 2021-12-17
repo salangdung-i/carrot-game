@@ -24,4 +24,8 @@ export default class PopUp {
     this.popUp.style.visibility = 'hidden';
   }
 
+  finish() {
+    this.popUpBtn.style.visibility = 'hidden';
+  }
+
 }

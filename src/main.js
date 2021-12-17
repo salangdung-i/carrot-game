@@ -40,6 +40,7 @@ function gameInit() {
 
 
 function gameStart() {
+
   audio.playBg();
   timerClick();
   if (GAME_STATE == 1) {
@@ -60,6 +61,7 @@ function gameStart() {
 }
 
 function gameStop(state) {
+
   let text;
   gameStatus = false;
   audio.stopBg();
@@ -67,16 +69,19 @@ function gameStop(state) {
 
   if (state) {
     ++GAME_STATE;
-
     audio.playGameWin();
+
     if (GAME_STATE > 3) {
       text = `NO NEXT STAGE❗️ 
       YOU'RE THE BEST 🏆`;
+      gameBanner.finish();
     } else {
+
       text = `YOU WIN 🎉 
       DO YOU WANT NEXT STAGE${GAME_STATE} ❓`;
     }
   } else {
+    if (GAME_STATE > 3) GAME_STATE = 3;
     audio.playAlert();
     text = `YOU LOST 🥲 
     TRY AGAIN STAGE${GAME_STATE}❓`;
@@ -95,6 +100,9 @@ gameBtn.addEventListener('click', () => {
 });
 
 field.addEventListener('click', (event) => {
+  if (!gameStatus) {
+    return;
+  }
   const target = event.target;
   if (target.matches('.carrot')) {
     target.remove();
